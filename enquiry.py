@@ -3,8 +3,8 @@ import pandas as pd
 from openai import OpenAI
 import openpyxl
 import re
-
-# Placeholder for a function to call the large model
+#s
+# Placeholder for a function to call the large model:q  s
 def call_large_model(input_text, model, api_key):
     try:
         # Initialize OpenAI client
