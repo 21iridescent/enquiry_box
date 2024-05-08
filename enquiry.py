@@ -106,8 +106,8 @@ if user_input:
                 pass
 
         st.subheader("问卷草稿展示：")
-        combined_results = "\n\n".join(model_results)
-        st.text_area("复制问卷草稿展示：", combined_results, height=200)
+        combined_results = "\t".join(model_results)
+        st.text_area("复制问卷草稿展示：", combined_results, height=800)
 
         st.text(combined_results)
 
