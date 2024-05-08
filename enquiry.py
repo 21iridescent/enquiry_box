@@ -33,16 +33,6 @@ import re
 
 combined_results = ""
 
-# Display the download button, but disable it if there's no input yet
-st.download_button(
-    label="下载问卷草稿为TXT文件",
-    data=combined_results,
-    file_name="问卷草稿.txt",
-    mime="text/plain",
-    disabled=combined_results == "",  # Disable button if combined_results is empty
-    help="请先输入文本并生成问卷草稿以启用下载。"
-)
-
 def get_binary_file_downloader_html(bin_file, file_name):
     with open(bin_file, 'r', encoding='utf-8') as f:
         data = f.read()
