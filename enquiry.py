@@ -109,6 +109,9 @@ if user_input:
         combined_results = "\t".join(model_results)
         st.text_area("复制问卷草稿展示：", combined_results, height=800)
 
+        #output code
+        st.code(combined_results)
+
         st.text(combined_results)
 
         # Re-display the download button enabled now that we have results to download
