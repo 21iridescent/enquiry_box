@@ -12,7 +12,7 @@ def call_large_model(input_text, model, api_key):
             base_url="https://openrouter.ai/api/v1",
             api_key=api_key,
         )
-        user_prompt = """#你是一个专业的问卷表单设计者，根据我提供的问卷文本，请根据文本中的标记符号设计对应的表单问题。## 标记符号的基本格式如下，{} : 代表此处是一道简单填空题，【】代表此处是一道选择题，（）代表此处是一道长文本填空题；##请需要按照顺序，设计问题表单：包括 1. 问题序号，2. 问题题干，3. 问题选项（如有）。其中，问题题干需要你根据现在的文本内容理解后生成。##要求：1. 输出格式整洁，问题题干简明合理，选项设计合理。输出为 Markdown 格式。2. 输出语言为中文。3. 只输出问卷，不要包含别的信息。4. 务必注意：生成问题表单中的问题起始编号与文本中的特殊符号的编号严格对应，请严格对照！！！
+        user_prompt = """#你是一个专业的问卷表单设计者，根据我提供的问卷文本，请根据文本中的标记符号设计对应的表单问题。## 标记符号的基本格式如下，{} : 代表此处是一道简单填空题，【】代表此处是一道选择题，（）代表此处是一道长文本填空题；##请需要按照顺序，设计问题表单：包括 1. 问题序号，2. 问题题干，3. 问题选项（如有）。其中，问题题干需要你根据现在的文本内容理解后生成。##要求：1. 输出格式整洁，问题题干简明合理，选项设计合理。输出为 Markdown 格式。并用#符号分隔开不同问题。2. 输出语言为中文。3. 只输出问卷，不要包含别的信息。4. 务必注意：生成问题表单中的问题起始编号与文本中的特殊符号的编号严格对应，请严格对照！！！
         #输出举例：问题-问题编号. 您公司的名字是什么? 回答：您公司的名字 /n
         
         #文本："""
@@ -29,17 +29,20 @@ def call_large_model(input_text, model, api_key):
         return str(e)
 
 # Function to replace special symbols with numbered symbols
+import re
+
 def number_special_symbols(text):
     patterns = [r'\【.*?\】', r'\{.*?\}', r'\（.*?\）']
-    index = 0
+    pattern = '|'.join(patterns)  # 合并所有的pattern
+    matches = list(re.finditer(pattern, text))  # 找到所有符合pattern的子串
+    matches.sort(key=lambda x: x.start())  # 按照子串在原文中出现的位置进行排序
 
-    for pattern in patterns:
-        matches = re.finditer(pattern, text)
-        for match in matches:
-            original_text = match.group(0)
-            numbered_text =  str(index) + '.' + original_text[:-1] + original_text[-1]
-            text = text.replace(original_text, numbered_text, 1)
-            index += 1
+    index = 0
+    for match in matches:
+        original_text = match.group(0)
+        numbered_text = str(index) + '.' + original_text[:-1] + original_text[-1]
+        text = text.replace(original_text, numbered_text, 1)
+        index += 1
 
     return text
 
