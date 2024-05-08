@@ -102,11 +102,14 @@ if user_input:
 
             st.subheader("模型输出:")
             for idx, result in enumerate(model_results):
-                st.expander(f"段落 {idx + 1} 的模型输出:", expanded=True).text_area("复制模型输出：", result, height=100)
+                #st.expander(f"段落 {idx + 1} 的模型输出:", expanded=True).text_area("复制模型输出：", result, height=100)
+                pass
 
         st.subheader("问卷草稿展示：")
         combined_results = "\n\n".join(model_results)
         st.text_area("复制问卷草稿展示：", combined_results, height=200)
+
+        st.text(combined_results)
 
         # Re-display the download button enabled now that we have results to download
         st.download_button(
